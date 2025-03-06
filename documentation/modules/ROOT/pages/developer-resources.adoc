@@ -1,4 +1,4 @@
-= Solution Patterns: Template Name
+= Solution Patterns: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization
 :sectnums:
 :sectlinks:
 :doctype: book
@@ -6,6 +6,6 @@
 
 = Developer Resources
 
-* Add link to the git repo of the code
-* Add links to whitepapers, ebooks, learning paths, product pages
+* https://www.redhat.com/en/technologies/cloud-computing/openshift/virtualization[OpenShift Virtualization]
+* https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/hosted_control_planes/index[Hosted Control Planes]
 

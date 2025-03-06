@@ -1,5 +1,5 @@
-name: solution-pattern-template
-title: Template Tutorial
+name: solution-pattern-disconnected-hcp-with-virt
+title: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization
 version: master
 nav:
   - modules/ROOT/nav.adoc

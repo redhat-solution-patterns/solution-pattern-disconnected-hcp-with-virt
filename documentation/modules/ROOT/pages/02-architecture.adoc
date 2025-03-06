@@ -1,104 +1,34 @@
-= Solution Pattern: Name Template
+= Solution Pattern: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization
 :sectnums:
 :sectlinks:
 :doctype: book
 
 = Architecture 
 
-Introduction for the architecture of this solution pattern.
 
-== Common Challenges 
+** What is HCP:
 
-[#tech_stack]
-== Technology Stack
+Hosted Control Plane (HCP) is often referred to as "HyperShift" is an architectural innovation that allows for the separation of the control plane from the worker nodes in OpenShift clusters. This separation enables the control plane to be hosted independently on a managed infrastructure without the need for dedicated virtual or physical machines, which provides several benefits, especially in terms of scalability, resource efficiency, and management overhead.
 
-// Change links and text here as you see fit.
-* Red Hat supported products
-** https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift]
-** Red Hat Application Foundation
-*** https://access.redhat.com/products/quarkus[Quarkus]
-*** https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-streams-for-apache-kafka[Kafka Streams]
-* Other open source products:
-** https://www.postgresql.org/[PostgreSQL database]
-** https://helm.sh/[Helm]
+image::hcp_intro.png[width=100%]
+
+** What is Disconnected HCP:
+
+Disconnected HCP is an OpenShift Container Platform deployment that is not connected to the internet and that uses Hosted Control Planes as a base. We can deploy hosted control planes in a disconnected environment on bare metal or OpenShift Virtualization.
+Hosted control planes in disconnected environments function differently than in standalone OpenShift Container Platform:
+
+- The control plane is in the management cluster. The control plane is where the pods of the hosted control plane are run and managed by the Control Plane Operator.
+
+- The data plane is in the workers of the hosted cluster. The data plane is where the workloads and other pods run, all managed by the HostedClusterConfig Operator.
+
+image::disconnected_hcp.png[width=100%]
+
 
 
 [#in_depth]
 == An in-depth look at the solution's architecture
 
-Technical description including all or some of the following: architecture ir ed diagrams. In-depth details of the decisions made and solutions used. Description of each service and what it is used for. Description of any integration.
-
-=== Using images 
-
-image::red_hat_open-hybrid-cloud.png[width=30%]
-
-{empty}
-
-=== Embedding HTML
-
-++++
-  <br>
-  <h3> Embed HTML by surrounding it with with four +s before and after. </h3>
-  <span>View the ascii doc to learn more</span>
-  <br> 
-++++
+This solution presents an architectural solution demonstrating how you can provision Disconnected Hosted Control Planes OpenShift clusters using OpenShift Virtualization. We will be first mirroring the required images to the internal registry and then using OpenShift Virtualization we will provision disconnected hosted control plane OpenShift cluster.
 
 
-=== Different decorators
-
-[TIP]
-====
-This is a Tip
-====
-
-[NOTE]
-====
-This is a NOTE
-====
-
-[WARNING]
-====
-This is a WARNING
-====
-
-[IMPORTANT]
-====
-This is IMPORTANT
-====
-
-
-=== Creating  tables
- 
-[cols="1a,1a,1a"]
-|===
-| *Column A*  | Column *A* | _Column C_
-|
-* Lorem Ipsum
-* Lorem Ipsum
-
-|
-* Lorem Ipsum
-* Lorem Ipsum
-
-|
-* Lorem Ipsum
-* Lorem Ipsum
-|===
-
-
-
-=== Content that can be copied
-
-Click below to copy the content
-[.console-input]
-[source,shell script]
-----
-oc version #openshift cli client
-oc login --token=<token> --server=<server>
-----
-
-
-[#more_tech]
-== About the Technology Stack
-
-If you want to include more details about the tech stack you used, this is the place.
+image::disconnected_arch.png[width=100%]

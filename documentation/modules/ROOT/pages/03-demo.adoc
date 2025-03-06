@@ -1,4 +1,5 @@
-= Solution Pattern: Name Template
+= Solution Pattern: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization
+
 :sectnums:
 :sectlinks:
 :doctype: book
@@ -7,28 +8,10 @@
 
 == Demonstration
 
-Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
-
 [#demo-video]
 === Watch a demonstration
 
-In this video you can see xpto:
+In this interactive demo, you can see detailed architectural design for Disconnected HCP using OpenShift Virtualization:
 
-video::3yULVMdqJ98[youtube, width=800, height=480]
+https://interact.redhat.com/share/V5KUd2waxXdcSfnig6RP[Run your private workloads in HCP OpenShift Cluster with OpenShift Virtualization in a disconnected environment]
 
-Next, you can learn how to walkthrough this demo.
-
-== Run the demonstration
-
-=== Before getting started
-To run this demo, you will need xpto. Adding to that, make sure to have:
-
-* ABC
-* XYZ
-* XPTO
-
-=== Installing the demo
-Installation guide and basic test of the demo installation if needed
-
-=== Walkthrough guide
-How to run through the demo

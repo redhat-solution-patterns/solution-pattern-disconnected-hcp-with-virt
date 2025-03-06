@@ -1,7 +1,11 @@
 == The story behind this solution pattern
 
-A description of the story that was used to build the demo and architectures of this SP.
+Organizations are looking for ways to deploy their private workloads using Hosted Control Planes architecture. In addition to managing multiple OpenShift clusters, they are also aiming for optimizing resource utilization and reducing costs associated with control plane management.
+
+In this architectural design, we deep dive into: how Organizations can provision Disconnected Hosted Control Planes using OpenShift Virtualization.
+
 
 == The Solution
 
-This is a summary of the solution
+This solution presents an architectural solution demonstrating how you can provision Disconnected Hosted Control Planes OpenShift clusters using OpenShift Virtualization. We will be first mirroring the required images to the internal registry and then using OpenShift Virtualization we will provision disconnected hosted control plane OpenShift cluster.
+
