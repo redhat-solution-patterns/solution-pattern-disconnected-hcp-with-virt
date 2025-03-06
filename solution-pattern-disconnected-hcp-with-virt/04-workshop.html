@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Solution Pattern: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization :: Solution Patterns for Cloud Native Architectures</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-disconnected-hcp-with-virt/04-workshop.html">
+    <link rel="prev" href="03-demo.html">
+    <link rel="next" href="developer-resources.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" style="font-size: 20px; color: white"
+        href="https://redhat-solution-patterns.github.io/solution-patterns">
+        <img src="../_/img/logo.png" height="35px" alt="Solution Patterns">&nbsp; Solution Patterns for Cloud Native Architectures</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Architectures &amp; Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://www.redhat.com/architect/portfolio/" target="_blank">Portfolio Architecture&nbsp; </a>
+            <a class="navbar-item" href="https://redhat-solution-patterns.github.io/solution-patterns/patterns.html"  target="_blank">Solution Patterns </a>
+            <a class="navbar-item" href="https://validatedpatterns.io/" target="_blank">Validated Patterns&nbsp;</a>
+            <a class="navbar-item" href="https://catalog.redhat.com/solutions" target="_blank">Ecosystem Solutions&nbsp;</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com">Red Hat Developers</a>
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com/app-dev-platform">App Dev Platform</a>
+            <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/application-foundations">Red Hat Application Services</a>
+          </div>
+        </div>
+
+          <a class="navbar-item" target="_blank" href="https://github.com/redhat-solution-patterns/redhat-solution-patterns.github.io/issues">Feedback</a>
+          <a class="navbar-item" target="_blank" href="https://redhat-solution-patterns.github.io/solution-patterns/contributors-guide.html">Contribute</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="solution-pattern-disconnected-hcp-with-virt" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_story_behind_this_solution_pattern">1.2 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_solution">1.3 The solution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#in_depth">2.1. An in-depth look at the solution&#8217;s architecture</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_demonstration">3.1. Demonstration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="04-workshop.html">4. Workshop</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_installing_the_workshop_environment">4.1. Installing the workshop environment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deliver_wksp">4.2. Delivering the workshop</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="developer-resources.html">5. Developer Resources</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <span class="nav-text"><a href="https://redhat-solution-patterns.github.io/solution-patterns/patterns.html" target="_blank" rel="noopener">Explore Red Hat Solution Patterns</a></span>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization</a></li>
+    <li><a href="04-workshop.html">4. Workshop</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/gmidha1/solution-pattern-disconnected-hcp-with-virt/edit/main/documentation/modules/ROOT/pages/04-workshop.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Solution Pattern: Run your private workloads in Disconnected HCP OpenShift clusters with OpenShift Virtualization</h1>
+<h1 id="_workshop" class="sect0"><a class="anchor" href="#_workshop"></a><a class="link" href="#_workshop">Workshop</a></h1>
+<div class="openblock partintro">
+<div class="content">
+In this workshop, we will look at how we utilize our internal container registry to deploy a disconnected HCP cluster using OpenShift Virtualization.
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_the_workshop_environment"><a class="anchor" href="#_installing_the_workshop_environment"></a><a class="link" href="#_installing_the_workshop_environment">1. Installing the workshop environment</a></h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Create an environment using this <a href="https://catalog.demo.redhat.com/catalog?search=hosted&amp;item=babylon-catalog-prod%2Fequinix-metal.hosted-control-planes.prod">link</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_delivering_the_workshop"><a class="anchor" href="#_delivering_the_workshop"></a><a class="link" href="#_delivering_the_workshop">2. Delivering the workshop</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To deploy an internal registry on the bastion, you can follow these steps:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">curl -L -o oc-mirror.tar.gz https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/4.18.0-rc.8/oc-mirror.tar.gz;tar -xzf oc-mirror.tar.gz;chmod u+x oc-mirror</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a pull secret file, you can get your pull secret from console.redhat.com and paste it in the file:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">vi  ./openshift_pull.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.
+Create this bash script for creating an internal registry:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">vi  ./registry.sh</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">#!/usr/bin/env bash
+
+set -euo pipefail
+
+PRIMARY_NIC=$(ls -1 /sys/class/net | grep -v podman | head -1)
+export PATH=/root/bin:$PATH
+export PULL_SECRET="/home/lab-user/openshift_pull.json"
+
+if [[ ! -f $PULL_SECRET ]];then
+  echo "Pull Secret not found, exiting..."
+  exit 1
+fi
+
+dnf -y install podman httpd httpd-tools jq skopeo libseccomp-devel
+export IP=$(ip -o addr show $PRIMARY_NIC | head -1 | awk '{print $4}' | cut -d'/' -f1)
+REGISTRY_NAME=registry.$(hostname --long)
+REGISTRY_USER=dummy
+REGISTRY_PASSWORD=dummy
+KEY=$(echo -n $REGISTRY_USER:$REGISTRY_PASSWORD | base64)
+echo "{\"auths\": {\"$REGISTRY_NAME:5000\": {\"auth\": \"$KEY\", \"email\": \"sample-email@domain.ltd\"}}}" &gt; /root/disconnected_pull.json
+mv ${PULL_SECRET} /root/openshift_pull.json.old
+jq ".auths += {\"$REGISTRY_NAME:5000\": {\"auth\": \"$KEY\",\"email\": \"sample-email@domain.ltd\"}}" &lt; /root/openshift_pull.json.old &gt; $PULL_SECRET
+mkdir -p /opt/registry/{auth,certs,data,conf}
+cat &lt;&lt;EOF &gt; /opt/registry/conf/config.yml
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+http:
+  addr: :5000
+  headers:
+    X-Content-Type-Options: [nosniff]
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+compatibility:
+  schema1:
+    enabled: true
+EOF
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout /opt/registry/certs/domain.key -x509 -days 3650 -out /opt/registry/certs/domain.crt -subj "/C=US/ST=Madrid/L=San Bernardo/O=Karmalabs/OU=Guitar/CN=$REGISTRY_NAME" -addext "subjectAltName=DNS:$REGISTRY_NAME"
+cp /opt/registry/certs/domain.crt /etc/pki/ca-trust/source/anchors/
+update-ca-trust extract
+htpasswd -bBc /opt/registry/auth/htpasswd $REGISTRY_USER $REGISTRY_PASSWORD
+podman create --name registry --net host --security-opt label=disable --replace -v /opt/registry/data:/var/lib/registry -v /opt/registry/auth:/auth -v /opt/registry/conf/config.yml:/etc/docker/registry/config.yml -e "REGISTRY_AUTH=htpasswd" -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry" -e "REGISTRY_HTTP_SECRET=ALongRandomSecretForRegistry" -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -v /opt/registry/certs:/certs -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key docker.io/library/registry:latest
+[ "$?" == "0" ] || !!</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create registry by running:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">chmod u+x ./registry.sh
+sudo ./registry.sh
+sudo podman start registry</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check registry status by using the following command:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo podman ps</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Make changes to ensure registry is reachable from jump box and management nodes. Add an entry in /etc/hosts for registry.hypervisor in 127.0.0.1 line on jump box/bastion.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo vi /etc/hosts</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/dns-change.png" alt="dns change" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Add an entry to dnsmasq so that registry dns is accessible from OpenShift. Add this line: host-record=registry.hypervisor,192.168.125.1</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo vi /opt/dnsmasq/include.d/infrastructure-host.ipv4</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Restart dnsmasq using the below command:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo systemctl restart dnsmasq-virt</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a file named imageset.yaml using the following code:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">cat &lt;&lt; EOF &gt; $HOME/imageset-config.yaml
+---
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+ platform:
+   channels:
+   - name: stable-4.17
+     type: ocp
+     minVersion: 4.17.15
+     maxVersion: 4.17.16
+   kubeVirtContainer: true
+
+
+ operators:
+ - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.17
+   packages:
+   - name: web-terminal
+     channels:
+     - name: fast
+   - name: lvms-operator
+   - name: local-storage-operator
+   - name: odf-csi-addons-operator
+   - name: odf-operator
+   - name: mcg-operator
+   - name: ocs-operator
+   - name: metallb-operator
+   - name: kubevirt-hyperconverged
+   - name: multicluster-engine
+   - name: advanced-cluster-management
+
+
+ additionalImages:
+ - name: registry.redhat.io/rhel8/support-tools
+ - name: quay.io/karmab/origin-keepalived-ipfailover:latest
+ - name: registry.redhat.io/openshift4/ose-kube-rbac-proxy:v4.10
+
+
+ helm: {}
+EOF</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Generate Credentials to be used by oc-mirror command:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo podman login registry.hypervisor:5000 --authfile=/home/lab-user/openshift_pull.json;mkdir -p $XDG_RUNTIME_DIR/containers/;sudo cp /home/lab-user/openshift_pull.json $XDG_RUNTIME_DIR/containers/auth.json;sudo mkdir -p /root/.docker;sudo cp  $XDG_RUNTIME_DIR/containers/auth.json /root/.docker/config.json</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run oc-mirror cli command to mirror the images:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo mkdir -p /home/lab-user/mirror1
+
+sudo ./oc-mirror -c ./imageset-config.yaml --workspace file:///home/lab-user/mirror1 docker://registry.hypervisor:5000 --v2</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/oc-mirror1.png" alt="oc mirror1" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/oc-mirror2.png" alt="oc mirror2" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/oc-mirror3.png" alt="oc mirror3" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Login to OpenShift using this cli command and add the Registry CA to the Management Cluster</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc login -u &lt;user&gt; -p &lt;password&gt; &lt;apiserver_url&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Grab the cert from /opt/registry/certs/domain.crt and add in this yaml to create a configmap</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: registry-config
+  namespace: openshift-config
+data:
+  registry.hypervisor..5000: |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Before applying this configmap, validate your yaml using this tool.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f registry-config.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we need to patch the clusterwide object image.config.openshift.io including this:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc edit image.config.openshift.io</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">spec:
+  additionalTrustedCA:
+    name: registry-config</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Update the registry creds in the Management cluster. If this command prompts for username and password: dummy/dummy.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo podman logout registry.hypervisor:5000 ;sudo podman login registry.hypervisor:5000 --authfile=./mycreds.json; sudo chmod 666 ./mycreds.json;oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=./mycreds.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the mirroring process is complete, apply the YAML files from the results directory to the cluster by running the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/itms-oc-mirror.yaml /home/lab-user/mirror1/working-dir/cluster-resources/idms-oc-mirror.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After 2 mins, run the below command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/cs-redhat-operator-index-v4-&lt;version&gt;.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To verify the resources created with above command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc get imagedigestmirrorset
+oc get imagetagmirrorset
+oc get catalogsource -n openshift-marketplace</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To disable the default CatalogSource</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>RHACM Installation: We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm1.png" alt="acm1" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm2.png" alt="acm2" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm3.png" alt="acm3" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm4.png" alt="acm4" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>OpenShift Virtualization Installation</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Now we will install OpenShift Virtualization using default values:</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt1.png" alt="virt1" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt2.png" alt="virt2" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt3.png" alt="virt3" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt4.png" alt="virt4" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt5.png" alt="virt5" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt6.png" alt="virt6" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Hosted Control Plane Cluster creation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Creating hosted cluster namespace(clusters-disconnected1) and adding the Registry CA and credentials to the HostedCluster namespace.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: clusters-disconnected1
+spec: {}
+status: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: clusters
+spec: {}
+status: {}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Copy the Registry CA cert from here /opt/registry/certs/domain.crt and create a configmap as shown below.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">apiVersion: v1
+data:
+  ca-bundle.crt: |
+    -----BEGIN CERTIFICATE-----
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  name: user-ca-bundle
+  namespace: clusters</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a secret for Hosted Cluster to access the Registry.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc create secret generic disconnected-secret -n clusters --from-file=.dockerconfigjson=./mycreds.json --type=kubernetes.io/dockerconfigjson</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Apply this CRD to create a Hosted Cluster and Node Pool.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">apiVersion: hypershift.openshift.io/v1beta1
+kind: HostedCluster
+metadata:
+ creationTimestamp: null
+ name: disconnected1
+ namespace: clusters
+spec:
+ additionalTrustBundle:
+   name: "user-ca-bundle"
+ imageContentSources:
+ - source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+   mirrors:
+   - registry.hypervisor:5000/openshift/release
+ - source: quay.io/openshift-release-dev/ocp-release
+   mirrors:
+   - registry.hypervisor:5000/openshift/release-images
+ autoscaling: {}
+ configuration:
+   operatorhub:
+     disableAllDefaultSources: true
+ controllerAvailabilityPolicy: HighlyAvailable
+ dns:
+   baseDomain: ""
+ etcd:
+   managed:
+     storage:
+       persistentVolume:
+         size: 8Gi
+       type: PersistentVolume
+   managementType: Managed
+ fips: false
+ infraID: disconnected1-5lmsw
+ networking:
+   clusterNetwork:
+   - cidr: 10.132.0.0/14
+   networkType: OVNKubernetes
+   serviceNetwork:
+   - cidr: 172.31.0.0/16
+ olmCatalogPlacement: management
+ platform:
+   kubevirt:
+     baseDomainPassthrough: true
+   type: KubeVirt
+ pullSecret:
+   name: disconnected-secret
+ release:
+   image: registry.hypervisor:5000/openshift/release-images:4.17.15-x86_64
+ services:
+ - service: APIServer
+   servicePublishingStrategy:
+     type: LoadBalancer
+ - service: Ignition
+   servicePublishingStrategy:
+     type: Route
+ - service: Konnectivity
+   servicePublishingStrategy:
+     type: Route
+ - service: OAuthServer
+   servicePublishingStrategy:
+     type: Route
+ sshKey: {}
+status:
+ controlPlaneEndpoint:
+   host: ""
+   port: 0
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+ creationTimestamp: null
+ name: disconnected1
+ namespace: clusters
+spec:
+ arch: amd64
+ clusterName: disconnected1
+ management:
+   autoRepair: false
+   upgradeType: Replace
+ nodeDrainTimeout: 0s
+ nodeVolumeDetachTimeout: 0s
+ platform:
+   kubevirt:
+     attachDefaultNetwork: true
+     compute:
+       cores: 2
+       memory: 6Gi
+     networkInterfaceMultiqueue: Enable
+     rootVolume:
+       persistent:
+         size: 32Gi
+       type: Persistent
+   type: KubeVirt
+ release:
+   image: registry.hypervisor:5000/openshift/release-images:4.17.15-x86_64
+ replicas: 2
+status:
+ replicas: 0</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We can check the status of our Hosted Cluster using the below commands:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc get --namespace clusters hostedclusters
+
+oc get pod -n clusters-disconnected1
+
+oc get pod -n clusters-disconnected1</pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hcpcluster1.png" alt="hcpcluster1" width="100%">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hcpcluster2.png" alt="hcpcluster2" width="100%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We can create kubeconfig file and run oc cli commands as well:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>First download the hcp cli, If you face issue in the wget for tls cert, use --no-check-certificate</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc get ConsoleCLIDownload hcp-cli-download -o json | jq -r ".spec"
+
+wget &lt;hcp_cli_download_url&gt;
+
+tar xvzf hcp.tar.gz
+chmod +x hcp
+sudo mv hcp /usr/local/bin/.</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">./hcp create kubeconfig --name disconnected1 &gt; disconnected1-kubeconfig
+
+
+oc get nodes --kubeconfig=disconnected1-kubeconfig
+
+oc -n clusters get nodepool</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hcpcluster3.png" alt="hcpcluster3" width="100%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>From OpenShift Console, when we go to Virtual Machines, we see:</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hcpcluster4.png" alt="hcpcluster4" width="100%">
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="03-demo.html" class="query-params-link">3. See the Solution in Action</a></span>
+  <span class="next"><a href="developer-resources.html" class="query-params-link">5. Developer Resources</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
