@@ -4,7 +4,9 @@
 :sectlinks:
 :doctype: book
 
-This solution pattern presents an architectural solution demonstrating how you can run your private workloads in Disconnected HCP OpenShift clusters.
+The OpenShift 4 Hosted Control Plane (HCP), often referred to as "HyperShift," is an architectural innovation that allows for the separation of the control plane from the worker nodes in OpenShift clusters. This separation enables the control plane to be hosted independently on a managed infrastructure without the need for dedicated virtual or physical machines, which provides several benefits, especially in terms of scalability, resource efficiency, and management overhead.
+
+This solution pattern presents an architectural solution demonstrating how you can run your private workloads in Disconnected HCP OpenShift clusters using OpenShift Virtualization.
 
 
 *Contributors:* Gaurav Midha, Juan Manuel Parrilla Madrid
