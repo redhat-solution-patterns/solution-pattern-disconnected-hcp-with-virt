@@ -11,7 +11,7 @@
 [#demo-video]
 === Watch a demonstration
 
-In this interactive demo, you can see detailed architectural design for Disconnected HCP using OpenShift Virtualization:
+In this interactive demo, you can see detailed architectural design for Disconnected Hosted Control Planes using OpenShift Virtualization:
 
 https://interact.redhat.com/share/V5KUd2waxXdcSfnig6RP[Run your private workloads in HCP OpenShift Cluster with OpenShift Virtualization in a disconnected environment]
 
