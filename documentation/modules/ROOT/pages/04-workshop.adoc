@@ -13,7 +13,9 @@ In this workshop, we will look at how we utilize our internal container registry
 
 == Delivering the workshop
 
-1. To deploy an internal registry on the bastion, you can follow these steps:
+=== Deploying Internal Registry
+
+* Download oc-mirror cli:
 +
 [.console-input]
 [source,shell script]
@@ -21,8 +23,8 @@ In this workshop, we will look at how we utilize our internal container registry
 curl -L -o oc-mirror.tar.gz https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/4.18.0-rc.8/oc-mirror.tar.gz;tar -xzf oc-mirror.tar.gz;chmod u+x oc-mirror
 
 ----
-+
-2. Create a pull secret file, you can get your pull secret from console.redhat.com and paste it in the file:
+
+* Create a pull secret file, you can get your pull secret from console.redhat.com and paste it in the file:
 +
 [.console-input]
 [source,shell script]
@@ -30,8 +32,9 @@ curl -L -o oc-mirror.tar.gz https://mirror.openshift.com/pub/openshift-v4/amd64/
 vi  ./openshift_pull.json
 ----
 +
-3. 
-Create this bash script for creating an internal registry:
+
+ 
+* Create this bash script for creating an internal registry:
 +
 [.console-input]
 [source,shell script]
@@ -98,8 +101,8 @@ podman create --name registry --net host --security-opt label=disable --replace 
 [ "$?" == "0" ] || !!
 
 ----
-+
-4. Create registry by running:
+
+* Create registry by running:
 +
 [.console-input]
 [source,shell script]
@@ -108,16 +111,16 @@ chmod u+x ./registry.sh
 sudo ./registry.sh
 sudo podman start registry
 ----
-+
-5. Check registry status by using the following command:
+
+* Check registry status by using the following command:
 +
 [.console-input]
 [source,shell script]
 ----
 sudo podman ps
 ----
-+
-6. Make changes to ensure registry is reachable from jump box and management nodes. Add an entry in /etc/hosts for registry.hypervisor in 127.0.0.1 line on jump box/bastion.
+
+* Make changes to ensure registry is reachable from jump box and management nodes. Add an entry in /etc/hosts for registry.hypervisor in 127.0.0.1 line on jump box/bastion.
 +
 [.console-input]
 [source,shell script]
@@ -127,23 +130,28 @@ sudo vi /etc/hosts
 +
 image::dns-change.png[width=100%]
 +
-Add an entry to dnsmasq so that registry dns is accessible from OpenShift. Add this line: host-record=registry.hypervisor,192.168.125.1
+
+* Add an entry to dnsmasq so that registry dns is accessible from OpenShift. Add this line: host-record=registry.hypervisor,192.168.125.1
 +
 [.console-input]
 [source,shell script]
 ----
 sudo vi /opt/dnsmasq/include.d/infrastructure-host.ipv4
 ----
-+
-7. Restart dnsmasq using the below command:
+
+
+* Restart dnsmasq using the below command:
 +
 [.console-input]
 [source,shell script]
 ----
 sudo systemctl restart dnsmasq-virt
 ----
-+
-8. Create a file named imageset.yaml using the following code:
+
+
+=== Copying images to internal registry and adding configs to the cluster:
+
+* Create a file named imageset.yaml using the following code:
 +
 [.console-input]
 [source,shell script]
@@ -189,16 +197,17 @@ mirror:
  helm: {}
 EOF
 ----
-+
-9. Generate Credentials to be used by oc-mirror command:
+
+* Generate Credentials to be used by oc-mirror command:
 +
 [.console-input]
 [source,shell script]
 ----
 sudo podman login registry.hypervisor:5000 --authfile=/home/lab-user/openshift_pull.json;mkdir -p $XDG_RUNTIME_DIR/containers/;sudo cp /home/lab-user/openshift_pull.json $XDG_RUNTIME_DIR/containers/auth.json;sudo mkdir -p /root/.docker;sudo cp  $XDG_RUNTIME_DIR/containers/auth.json /root/.docker/config.json
 ----
-+
-10. Run oc-mirror cli command to mirror the images:
+
+
+* Run oc-mirror cli command to mirror the images:
 +
 [.console-input]
 [source,shell script]
@@ -212,7 +221,7 @@ image::oc-mirror1.png[width=100%]
 image::oc-mirror2.png[width=100%]
 image::oc-mirror3.png[width=100%]
 
-Login to OpenShift using this cli command and add the Registry CA to the Management Cluster
+* Login to OpenShift using this cli command and add the Registry CA to the Management Cluster
 
 [.console-input]
 [source,shell script]
@@ -220,7 +229,7 @@ Login to OpenShift using this cli command and add the Registry CA to the Managem
 oc login -u <user> -p <password> <apiserver_url>
 ----
 
-Grab the cert from /opt/registry/certs/domain.crt and add in this yaml to create a configmap
+* Grab the cert from /opt/registry/certs/domain.crt and add in this yaml to create a configmap
 
 [.console-input]
 [source,shell script]
@@ -236,7 +245,7 @@ data:
     -----END CERTIFICATE-----
 ----
 
-Before applying this configmap, validate your yaml using this tool. 
+* Before applying this configmap, validate your yaml using this tool. 
 
 [.console-input]
 [source,shell script]
@@ -244,7 +253,7 @@ Before applying this configmap, validate your yaml using this tool.
 oc apply -f registry-config.yaml
 ----
 
-Now we need to patch the clusterwide object image.config.openshift.io including this: 
+* Now we need to patch the clusterwide object image.config.openshift.io including this: 
 
 [.console-input]
 [source,shell script]
@@ -261,26 +270,29 @@ spec:
     name: registry-config
 ----
 
-Update the registry creds in the Management cluster. If this command prompts for username and password: dummy/dummy.
+* Update the registry creds in the Management cluster. If this command prompts for username and password: dummy/dummy.
 
 [.console-input]
 [source,shell script]
 ----
 sudo podman logout registry.hypervisor:5000 ;sudo podman login registry.hypervisor:5000 --authfile=./mycreds.json; sudo chmod 666 ./mycreds.json;oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=./mycreds.json
 ----
-As the mirroring process is complete, apply the YAML files from the results directory to the cluster by running the following command:
+
+* As the mirroring process is complete, apply the YAML files from the results directory to the cluster by running the following command:
 [.console-input]
 [source,shell script]
 ----
 oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/itms-oc-mirror.yaml /home/lab-user/mirror1/working-dir/cluster-resources/idms-oc-mirror.yaml 
 ----
-After 2 mins, run the below command:
+
+* After 2 mins, run the below command:
 [.console-input]
 [source,shell script]
 ----
 oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/cs-redhat-operator-index-v4-<version>.yaml
 ----
-To verify the resources created with above command:
+
+* To verify the resources created with above command:
 
 [.console-input]
 [source,shell script]
@@ -289,7 +301,10 @@ oc get imagedigestmirrorset
 oc get imagetagmirrorset
 oc get catalogsource -n openshift-marketplace
 ----
-To disable the default CatalogSource
+
+=== Deploying Operators from Internal Registry:
+
+* To disable the default CatalogSource
 [.console-input]
 [source,shell script]
 ----
@@ -297,16 +312,18 @@ oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disab
 ----
 
 
-RHACM Installation: We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.
+==== RHACM Installation
+
+We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.
 
 image::acm1.png[width=100%]
 image::acm2.png[width=100%]
 image::acm3.png[width=100%]
 image::acm4.png[width=100%]
 
-OpenShift Virtualization Installation
+==== OpenShift Virtualization Installation
 
-- Now we will install OpenShift Virtualization using default values:
+Now we will install OpenShift Virtualization using default values:
 
 image::virt1.png[width=100%]
 image::virt2.png[width=100%]
@@ -315,9 +332,9 @@ image::virt4.png[width=100%]
 image::virt5.png[width=100%]
 image::virt6.png[width=100%]
 
-Hosted Control Plane Cluster creation:
+=== Hosted Control Plane Cluster creation:
 
-- Creating hosted cluster namespace(clusters-disconnected1) and adding the Registry CA and credentials to the HostedCluster namespace.
+* Creating hosted cluster namespace(clusters-disconnected1) and adding the Registry CA and credentials to the HostedCluster namespace.
 
 [.console-input]
 [source,shell script]
@@ -340,7 +357,7 @@ spec: {}
 status: {}
 ----
 
-- Copy the Registry CA cert from here /opt/registry/certs/domain.crt and create a configmap as shown below.
+* Copy the Registry CA cert from here /opt/registry/certs/domain.crt and create a configmap as shown below.
 
 [.console-input]
 [source,shell script]
@@ -355,7 +372,8 @@ metadata:
   name: user-ca-bundle
   namespace: clusters
 ----
-- Create a secret for Hosted Cluster to access the Registry.
+
+* Create a secret for Hosted Cluster to access the Registry.
 
 [.console-input]
 [source,shell script]
@@ -364,7 +382,7 @@ oc create secret generic disconnected-secret -n clusters --from-file=.dockerconf
 ----
 
 
-- Apply this CRD to create a Hosted Cluster and Node Pool.
+* Apply this CRD to create a Hosted Cluster and Node Pool.
 
 [.console-input]
 [source,shell script]
@@ -468,7 +486,8 @@ status:
  replicas: 0
 ----
 
-- We can check the status of our Hosted Cluster using the below commands:
+* We can check the status of our Hosted Cluster using the below commands:
+
 [.console-input]
 [source,shell script]
 ----
@@ -478,12 +497,14 @@ oc get pod -n clusters-disconnected1
 
 oc get pod -n clusters-disconnected1
 ----
+
 image::hcpcluster1.png[width=100%]
 image::hcpcluster2.png[width=100%]
 
-- We can create kubeconfig file and run oc cli commands as well:
+* We can create kubeconfig file and run oc cli commands as well:
 
-First download the hcp cli, If you face issue in the wget for tls cert, use --no-check-certificate
+** First download the hcp cli, If you face issue in the wget for tls cert, use --no-check-certificate
+
 [.console-input]
 [source,shell script]
 ----
@@ -494,7 +515,6 @@ wget <hcp_cli_download_url>
 tar xvzf hcp.tar.gz
 chmod +x hcp
 sudo mv hcp /usr/local/bin/.
-
 ----
 
 [.console-input]
@@ -511,6 +531,6 @@ oc -n clusters get nodepool
 
 image::hcpcluster3.png[width=100%]
 
-- From OpenShift Console, when we go to Virtual Machines, we see:
+** From OpenShift Console, when we go to Virtual Machines, we see:
 
 image::hcpcluster4.png[width=100%]
