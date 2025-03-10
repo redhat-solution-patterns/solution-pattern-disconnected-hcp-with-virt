@@ -174,10 +174,12 @@ In this workshop, we will look at how we utilize our internal container registry
 <div class="sect1">
 <h2 id="_delivering_the_workshop"><a class="anchor" href="#_delivering_the_workshop"></a><a class="link" href="#_delivering_the_workshop">2. Delivering the workshop</a></h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
+<div class="sect2">
+<h3 id="_deploying_internal_registry"><a class="anchor" href="#_deploying_internal_registry"></a><a class="link" href="#_deploying_internal_registry">2.1. Deploying Internal Registry</a></h3>
+<div class="ulist">
+<ul>
 <li>
-<p>To deploy an internal registry on the bastion, you can follow these steps:</p>
+<p>Download oc-mirror cli:</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">curl -L -o oc-mirror.tar.gz https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/4.18.0-rc.8/oc-mirror.tar.gz;tar -xzf oc-mirror.tar.gz;chmod u+x oc-mirror</code></pre>
@@ -191,10 +193,9 @@ In this workshop, we will look at how we utilize our internal container registry
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">vi  ./openshift_pull.json</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>3.
-Create this bash script for creating an internal registry:</p>
-</div>
+</li>
+<li>
+<p>Create this bash script for creating an internal registry:</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">vi  ./registry.sh</code></pre>
@@ -289,9 +290,9 @@ sudo podman start registry</code></pre>
 <img src="_images/dns-change.png" alt="dns change" width="100%">
 </div>
 </div>
-<div class="paragraph">
+</li>
+<li>
 <p>Add an entry to dnsmasq so that registry dns is accessible from OpenShift. Add this line: host-record=registry.hypervisor,192.168.125.1</p>
-</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo vi /opt/dnsmasq/include.d/infrastructure-host.ipv4</code></pre>
@@ -306,6 +307,13 @@ sudo podman start registry</code></pre>
 </div>
 </div>
 </li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_copying_images_to_internal_registry_and_adding_configs_to_the_cluster"><a class="anchor" href="#_copying_images_to_internal_registry_and_adding_configs_to_the_cluster"></a><a class="link" href="#_copying_images_to_internal_registry_and_adding_configs_to_the_cluster">2.2. Copying images to internal registry and adding configs to the cluster:</a></h3>
+<div class="ulist">
+<ul>
 <li>
 <p>Create a file named imageset.yaml using the following code:</p>
 <div class="listingblock console-input">
@@ -371,7 +379,7 @@ sudo ./oc-mirror -c ./imageset-config.yaml --workspace file:///home/lab-user/mir
 </div>
 </div>
 </li>
-</ol>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -388,16 +396,24 @@ sudo ./oc-mirror -c ./imageset-config.yaml --workspace file:///home/lab-user/mir
 <img src="_images/oc-mirror3.png" alt="oc mirror3" width="100%">
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Login to OpenShift using this cli command and add the Registry CA to the Management Cluster</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc login -u &lt;user&gt; -p &lt;password&gt; &lt;apiserver_url&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Grab the cert from /opt/registry/certs/domain.crt and add in this yaml to create a configmap</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -412,16 +428,24 @@ data:
     -----END CERTIFICATE-----</code></pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Before applying this configmap, validate your yaml using this tool.</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f registry-config.yaml</code></pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Now we need to patch the clusterwide object image.config.openshift.io including this:</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -435,32 +459,48 @@ data:
     name: registry-config</code></pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Update the registry creds in the Management cluster. If this command prompts for username and password: dummy/dummy.</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">sudo podman logout registry.hypervisor:5000 ;sudo podman login registry.hypervisor:5000 --authfile=./mycreds.json; sudo chmod 666 ./mycreds.json;oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=./mycreds.json</code></pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>As the mirroring process is complete, apply the YAML files from the results directory to the cluster by running the following command:</p>
+</li>
+</ul>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/itms-oc-mirror.yaml /home/lab-user/mirror1/working-dir/cluster-resources/idms-oc-mirror.yaml</code></pre>
+<pre>oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/itms-oc-mirror.yaml /home/lab-user/mirror1/working-dir/cluster-resources/idms-oc-mirror.yaml</pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>After 2 mins, run the below command:</p>
+</li>
+</ul>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/cs-redhat-operator-index-v4-&lt;version&gt;.yaml</code></pre>
+<pre>oc apply -f /home/lab-user/mirror1/working-dir/cluster-resources/cs-redhat-operator-index-v4-&lt;version&gt;.yaml</pre>
 </div>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>To verify the resources created with above command:</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -469,16 +509,25 @@ oc get imagetagmirrorset
 oc get catalogsource -n openshift-marketplace</code></pre>
 </div>
 </div>
-<div class="paragraph">
+</div>
+<div class="sect2">
+<h3 id="_deploying_operators_from_internal_registry"><a class="anchor" href="#_deploying_operators_from_internal_registry"></a><a class="link" href="#_deploying_operators_from_internal_registry">2.3. Deploying Operators from Internal Registry:</a></h3>
+<div class="ulist">
+<ul>
+<li>
 <p>To disable the default CatalogSource</p>
+</li>
+</ul>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</code></pre>
+<pre>oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</pre>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_rhacm_installation"><a class="anchor" href="#_rhacm_installation"></a><a class="link" href="#_rhacm_installation">2.3.1. RHACM Installation</a></h4>
 <div class="paragraph">
-<p>RHACM Installation: We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.</p>
+<p>We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -500,15 +549,11 @@ oc get catalogsource -n openshift-marketplace</code></pre>
 <img src="_images/acm4.png" alt="acm4" width="100%">
 </div>
 </div>
-<div class="paragraph">
-<p>OpenShift Virtualization Installation</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
+<div class="sect3">
+<h4 id="_openshift_virtualization_installation"><a class="anchor" href="#_openshift_virtualization_installation"></a><a class="link" href="#_openshift_virtualization_installation">2.3.2. OpenShift Virtualization Installation</a></h4>
+<div class="paragraph">
 <p>Now we will install OpenShift Virtualization using default values:</p>
-</li>
-</ul>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -540,9 +585,10 @@ oc get catalogsource -n openshift-marketplace</code></pre>
 <img src="_images/virt6.png" alt="virt6" width="100%">
 </div>
 </div>
-<div class="paragraph">
-<p>Hosted Control Plane Cluster creation:</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_hosted_control_plane_cluster_creation"><a class="anchor" href="#_hosted_control_plane_cluster_creation"></a><a class="link" href="#_hosted_control_plane_cluster_creation">2.4. Hosted Control Plane Cluster creation:</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -717,13 +763,13 @@ status:
 </li>
 </ul>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
-<pre>oc get --namespace clusters hostedclusters
+<pre class="highlightjs highlight"><code class="language-shell script hljs" data-lang="shell script">oc get --namespace clusters hostedclusters
 
 oc get pod -n clusters-disconnected1
 
-oc get pod -n clusters-disconnected1</pre>
+oc get pod -n clusters-disconnected1</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -740,11 +786,15 @@ oc get pod -n clusters-disconnected1</pre>
 <ul>
 <li>
 <p>We can create kubeconfig file and run oc cli commands as well:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>First download the hcp cli, If you face issue in the wget for tls cert, use --no-check-certificate</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>First download the hcp cli, If you face issue in the wget for tls cert, use --no-check-certificate</p>
+</li>
+</ul>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -782,6 +832,7 @@ oc -n clusters get nodepool</code></pre>
 <div class="imageblock">
 <div class="content">
 <img src="_images/hcpcluster4.png" alt="hcpcluster4" width="100%">
+</div>
 </div>
 </div>
 </div>
