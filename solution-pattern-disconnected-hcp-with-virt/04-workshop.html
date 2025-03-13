@@ -165,7 +165,10 @@ In this workshop, we will look at how we utilize our internal container registry
 <div class="ulist">
 <ul>
 <li>
-<p>Create an environment using this <a href="https://catalog.demo.redhat.com/catalog?search=hosted&amp;item=babylon-catalog-prod%2Fequinix-metal.hosted-control-planes.prod">link</a>.</p>
+<p>If you are a Red Hatter, you can order a lab environment using this <a href="https://catalog.demo.redhat.com/catalog?search=hosted&amp;item=babylon-catalog-prod%2Fequinix-metal.hosted-control-planes.prod">link</a>.</p>
+</li>
+<li>
+<p>If you want to setup your own environment from scratch, follow this <a href="https://labs.sysdeseng.com/hypershift-baremetal-lab/4.17/lab-setup.html">link</a>.</p>
 </li>
 </ul>
 </div>
@@ -529,24 +532,52 @@ oc get catalogsource -n openshift-marketplace</code></pre>
 <div class="paragraph">
 <p>We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm1.png" alt="acm1" width="100%">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/acm2.png" alt="acm2" width="100%">
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Install RHACM operator from OperatorHub</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/acm3.png" alt="acm3" width="100%">
+<img src="_images/acm1.png" alt="acm1" width="70%">
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select default values and install the operator.</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/acm4.png" alt="acm4" width="100%">
+<img src="_images/acm2.png" alt="acm2" width="70%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Once installed, click on Create MulticlusterHub.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm3.png" alt="acm3" width="70%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Once multicluster hub is in running status, our RHACM installation is successful.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm4.png" alt="acm4" width="70%">
 </div>
 </div>
 </div>
@@ -555,34 +586,62 @@ oc get catalogsource -n openshift-marketplace</code></pre>
 <div class="paragraph">
 <p>Now we will install OpenShift Virtualization using default values:</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/virt1.png" alt="virt1" width="100%">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/virt2.png" alt="virt2" width="100%">
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Install OpenShift Virtualization operator from OperatorHub</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/virt3.png" alt="virt3" width="100%">
+<img src="_images/virt1.png" alt="virt1" width="70%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select default values and install the operator.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt2.png" alt="virt2" width="70%">
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/virt4.png" alt="virt4" width="100%">
+<img src="_images/virt3.png" alt="virt3" width="70%">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on "Create HyperConverged" and select default values.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/virt4.png" alt="virt4" width="70%">
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/virt5.png" alt="virt5" width="100%">
+<img src="_images/virt5.png" alt="virt5" width="70%">
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Once kubevirt-hyperconverged is installed successfully, we can proceed with HCP cluster creation.</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/virt6.png" alt="virt6" width="100%">
+<img src="_images/virt6.png" alt="virt6" width="70%">
 </div>
 </div>
 </div>
