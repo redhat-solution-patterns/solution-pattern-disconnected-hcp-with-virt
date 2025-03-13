@@ -8,7 +8,9 @@
 In this workshop, we will look at how we utilize our internal container registry to deploy a disconnected HCP cluster using OpenShift Virtualization.
 
 == Installing the workshop environment
-* Create an environment using this https://catalog.demo.redhat.com/catalog?search=hosted&item=babylon-catalog-prod%2Fequinix-metal.hosted-control-planes.prod[link].
+* If you are a Red Hatter, you can order a lab environment using this https://catalog.demo.redhat.com/catalog?search=hosted&item=babylon-catalog-prod%2Fequinix-metal.hosted-control-planes.prod[link].
+
+* If you want to setup your own environment from scratch, follow this https://labs.sysdeseng.com/hypershift-baremetal-lab/4.17/lab-setup.html[link].
 
 
 == Delivering the workshop
@@ -316,21 +318,45 @@ oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disab
 
 We are installing RHACM as we need MCE for the cluster provisioning. MCE is required for this setup. You can install MCE only if you prefer.
 
-image::acm1.png[width=100%]
-image::acm2.png[width=100%]
-image::acm3.png[width=100%]
-image::acm4.png[width=100%]
+* Install RHACM operator from OperatorHub
+
+image::acm1.png[width=70%]
+
+* Select default values and install the operator.
+
+image::acm2.png[width=70%]
+
+* Once installed, click on Create MulticlusterHub.
+
+image::acm3.png[width=70%]
+
+* Once multicluster hub is in running status, our RHACM installation is successful.
+
+image::acm4.png[width=70%]
 
 ==== OpenShift Virtualization Installation
 
 Now we will install OpenShift Virtualization using default values:
 
-image::virt1.png[width=100%]
-image::virt2.png[width=100%]
-image::virt3.png[width=100%]
-image::virt4.png[width=100%]
-image::virt5.png[width=100%]
-image::virt6.png[width=100%]
+* Install OpenShift Virtualization operator from OperatorHub
+
+image::virt1.png[width=70%]
+
+* Select default values and install the operator.
+
+image::virt2.png[width=70%]
+
+image::virt3.png[width=70%]
+
+* Click on "Create HyperConverged" and select default values.
+
+image::virt4.png[width=70%]
+
+image::virt5.png[width=70%]
+
+* Once kubevirt-hyperconverged is installed successfully, we can proceed with HCP cluster creation.
+
+image::virt6.png[width=70%]
 
 === Hosted Control Plane Cluster creation:
 
